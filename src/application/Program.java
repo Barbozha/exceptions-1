@@ -17,13 +17,14 @@ public class Program {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Date dataIn = new Date();
 		Date dataOut = new Date();
-		Date now = new Date();
+		
 		System.out.print("Room number: ");
 		quarto = sc.nextInt();
 		System.out.print("Check-in date (dd/MM/yyyy): ");
 		dataIn = sdf.parse(sc.next());
 		System.out.print("Check-out date (dd/MM/yyyy): ");
 		dataOut = sdf.parse(sc.next());
+		
 		if (!dataOut.after(dataIn)) {
 			System.out.println("Error in reservation: Check-out date must be after check-in date");
 		} else {
@@ -37,16 +38,10 @@ public class Program {
 			System.out.print("Check-out date (dd/MM/yyyy): ");
 			dataOut = sdf.parse(sc.next());
 			
-			
-			System.out.println(now);
-			if (dataIn.before(now) || dataOut.before(now)) {
-				System.out.println("Error in reservation: Reservation dates for update must be future dates");
-			} 
-			else if (!dataOut.after(dataIn)) {
-				System.out.println("Error in reservation: Check-out date must be after check-in date");
-			} 
-			else {
-				reserva.updateDates(dataIn, dataOut);
+			String error = reserva.updateDates(dataIn, dataOut);
+			if(error != null) {
+				System.out.println("Error in reservation: " + error);
+			}else {
 				System.out.println(reserva);
 			}
 

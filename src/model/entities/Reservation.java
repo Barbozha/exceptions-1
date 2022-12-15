@@ -8,7 +8,7 @@ public class Reservation {
 	private Integer rooNumber;
 	private Date checkin;
 	private Date checkout;
-	
+
 	private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 	public Reservation() {
@@ -36,17 +36,25 @@ public class Reservation {
 	public Date getCheckout() {
 		return checkout;
 	}
-	
+
 	public long duration() {
 		long diff = checkout.getTime() - checkin.getTime();
 		return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 	}
-	
-	public void updateDates(Date checkIn, Date checkOut) {
+
+	public String updateDates(Date checkIn, Date checkOut) {
+		Date now = new Date();
+		if (checkIn.before(now) || checkOut.before(now)) {
+			return "Reservation dates for update must be future dates";
+		} 
+		if (!checkOut.after(checkIn)) {
+			return "Check-out date must be after check-in date";
+		}
 		this.checkin = checkIn;
 		this.checkout = checkOut;
+		return null;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -57,8 +65,8 @@ public class Reservation {
 		sb.append(", check-out: ");
 		sb.append(sdf.format(this.getCheckout()));
 		sb.append(", ");
-		sb.append(duration()+" nights");
+		sb.append(duration() + " nights");
 		return sb.toString();
 	}
-	
+
 }
